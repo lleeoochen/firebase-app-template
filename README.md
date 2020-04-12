@@ -1,4 +1,4 @@
-** Firebase App Template **
+# Firebase App Template
 
 1. Start by create an empty repository on GitHub for your new app (note the repository name for step 2).
 
