@@ -2,10 +2,10 @@
 title:       <site title>
 description: <site description>
 
-url:         'www.weitungchen.com' # remote url  (github/website url)
+url:         '<site url>' # remote url  (github/website url)
 # url:         'localhost:4000' # local url
 
-baseUrl:     '/firebase-app-template' # local baseUrl (github repo name)
+baseUrl:     '/<site baseUrl>' # local baseUrl (github repo name)
 # baseUrl:     '' # local baseUrl
 
 # Build settings
