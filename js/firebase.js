@@ -28,7 +28,7 @@ class Firebase {
 		};
 
 		let ui = new firebaseui.auth.AuthUI(firebase.auth());
-		ui.start('#firebase-modal #main-content', firebaseAuthConfig);
+		ui.start('#firebase-modal .modal-body', firebaseAuthConfig);
 	}
 
 	authenticate() {
