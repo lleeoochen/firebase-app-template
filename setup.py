@@ -1,34 +1,97 @@
 #!/usr/bin/python3
 import os
 
-config_file = '_config.yml'
-config_file_content = ''
 
-print('Enter app name:', end=' ')
-app_name = input()
+class Color:
+	HEADER = '\033[95m'
+	BLUE = '\033[94m'
+	GREEN = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	NORMAL = '\033[0m'
+	BOLD = '\033[1m'
+	UNDERLINE = '\033[4m'
 
-print('Enter app description:', end=' ')
-app_description = input()
+def prompt(text, toggle=False):
+	toggle_text = ' (y/n)' if toggle else ''
 
-print('Enter your GitHub Pages url:', end=' ')
-app_url = input()
+	print(Color.GREEN + text + Color.NORMAL + toggle_text, end=' ')
+	response = input()
 
-print('Enter your GitHub username:', end=' ')
-github_username = input()
+	return response != 'n' if toggle else response
 
-print('Enter custom GitHub repository name:', end=' ')
-github_reponame = input()
+def edit_config():
+	file = '_config.yml'
+	content = ''
+
+	with open(file, 'r') as f:
+		content = f.read() \
+			.replace('<site title>', app_name) \
+			.replace('<site description>', app_description) \
+			.replace('<site url>', github_url) \
+			.replace('<site baseUrl>', github_reponame)
+
+	with open(file, 'w') as f:
+		f.write(content)
+
+def edit_html(file, start_comment='<!-- ', end_comment=' -->'):
+	content = ''
+
+	with open(file, 'r') as f:
+		lines = f.readlines()
+
+		for line in lines:
+			cond1 = not feature_bootstrap and ('bootstrap' in line or 'sweetalert' in line)
+			cond2 = not feature_firebase and 'firebase' in line
+			cond3 = not feature_firebase_storage and 'storage' in line
+
+			if cond1 or cond2 or cond3:
+				line = start_comment + line[:-1] + end_comment + '\n'
+			content += line
+
+	with open(file, 'w') as f:
+		f.write(content)
+
+def edit_js(file):
+	content = ''
+
+	with open(file, 'r') as f:
+		lines = f.readlines()
+
+		for line in lines:
+			cond1 = not feature_firebase
+			cond2 = not feature_firebase_storage and 'storage' in line
+
+			if cond1 or cond2:
+				line = '// ' + line
+			content += line
+
+	with open(file, 'w') as f:
+		f.write(content)
 
 
-with open(config_file, 'r') as f:
-	config_file_content = f.read() \
-		.replace('<site title>', app_name) \
-		.replace('<site description>', app_description) \
-		.replace('<site url>', app_url) \
-		.replace('<site baseUrl>', github_reponame)
+# =================== Main ===================
+print('\nAPP SETTING')
+app_name =			prompt('[APP NAME]')
+app_description =	prompt('[APP DESCRIPTION]')
 
-with open(config_file, "w") as f:
-	f.write(config_file_content)
+print('\nGITHUB SETTING')
+github_url =		prompt('[GITHUB PAGES DOMAIN]')
+github_username =	prompt('[GITHUB USERNAME]')
+github_reponame =	prompt('[APP REPOSITORY NAME]')
+
+print('\nFEATURE ADDON')
+feature_bootstrap =			prompt('[BOOTSTRAP - Styling + SweetAlert]', toggle=True)
+feature_firebase =			prompt('[FIREBASE  - User Authentication + Database]', toggle=True)
+feature_firebase_storage =	prompt('[FIREBASE  - Storage]', toggle=True) if feature_firebase else False
+
+edit_config()
+edit_html('_includes/head.html')
+edit_html('_includes/foot.html')
+edit_html('html/index.html', start_comment='{% comment %}', end_comment='{% endcomment %}')
+edit_html('html/game.html', start_comment='{% comment %}', end_comment='{% endcomment %}')
+edit_js('js/index.js')
+edit_js('js/game.js')
 
 os.system('git remote set-url origin git@github.com:{}/{}.git'.format(github_username, github_reponame))
 os.system('git commit -a -m "init app"')

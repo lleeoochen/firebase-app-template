@@ -2,7 +2,7 @@
 
 1. Start by create an empty repository on GitHub for your new app (note the repository name for step 2).
 
-2. Run the `./setup.py` script.
+2. Run the `python3 setup.py` script.
 
 3. Register a new Firebase App on <https://console.firebase.google.com/>.
 
