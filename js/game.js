@@ -5,5 +5,3 @@ database.authenticate().then(_auth_user => {
 	auth_user = _auth_user;
 	// TODO
 });
-
-console.log("game page");

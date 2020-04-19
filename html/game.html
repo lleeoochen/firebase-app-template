@@ -1,24 +1,16 @@
 ---
 permalink: /game
+layout: default
 title: <insert title>
 
 css:
-- "css/game.css"
+- "game.css"
 js:
-- "js/game.js"
+- "game.js"
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-	{% include head.html %}
+<!-- Content -->
+<div id="main-content"></div>
 
-	<body>
-		<div id="main-content">
-			{% comment %} TODO {% endcomment %}
-		</div>
-
-		{% include firebase.html %}
-	</body>
-
-	{% include foot.html %}
-</html>
+<!-- Modals -->
+{% include modal.html id="firebase-modal" %}
