@@ -97,8 +97,9 @@ edit_js		('js/index.js')
 edit_js		('js/game.js')
 
 os.system('git init')
-os.system('git remote set-url origin git@github.com:{}/{}.git'.format(github_username, github_reponame))
-os.system('git commit -a -m "init app"')
+os.system('git remote add origin git@github.com:{}/{}.git'.format(github_username, github_reponame))
+os.system('git add .')
+os.system('git commit -m "init app"')
 
 os.chdir('..')
 
