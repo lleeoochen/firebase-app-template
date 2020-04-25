@@ -20,8 +20,7 @@ def prompt(text, toggle=False):
 
 	return response != 'n' if toggle else response
 
-def edit_config():
-	file = '_config.yml'
+def edit_config(file):
 	content = ''
 
 	with open(file, 'r') as f:
@@ -85,20 +84,22 @@ feature_bootstrap =			prompt('[BOOTSTRAP - Styling + SweetAlert]', toggle=True)
 feature_firebase =			prompt('[FIREBASE  - User Authentication + Database]', toggle=True)
 feature_firebase_storage =	prompt('[FIREBASE  - Storage]', toggle=True) if feature_firebase else False
 
-edit_config()
-edit_html('_includes/head.html')
-edit_html('_includes/foot.html')
-edit_html('html/index.html', start_comment='{% comment %}', end_comment='{% endcomment %}')
-edit_html('html/game.html', start_comment='{% comment %}', end_comment='{% endcomment %}')
-edit_js('js/index.js')
-edit_js('js/game.js')
+os.system('cp -r template/ {}/'.format(github_reponame))
 
+os.chdir(github_reponame)
+
+edit_config	('_config.yml')
+edit_html	('_includes/head.html')
+edit_html	('_includes/foot.html')
+edit_html	('html/index.html', start_comment='{% comment %}', end_comment='{% endcomment %}')
+edit_html	('html/game.html', start_comment='{% comment %}', end_comment='{% endcomment %}')
+edit_js		('js/index.js')
+edit_js		('js/game.js')
+
+os.system('git init')
 os.system('git remote set-url origin git@github.com:{}/{}.git'.format(github_username, github_reponame))
 os.system('git commit -a -m "init app"')
-os.system('git push -u origin master')
 
-old_dir = os.getcwd()
 os.chdir('..')
-os.system('mv {}/ {}'.format(old_dir, github_reponame))
 
-print ('\nNow: cd ../{}'.format(github_reponame))
+print ('\nNow, move {}/ outside the template repo.'.format(github_reponame))
