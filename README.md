@@ -30,7 +30,11 @@
 	- Add authorized domain `[Your GitHub Pages Domain]`.
 
 
-5. For local development, change the following in `_config.yml`:
+5. For local development, run:
 
-	- Change url and baseUrl to local settings. 
-	- (Don't commit the changes to Git...) 
+	```
+	$ subl --project app.sublime-project
+	$ jekyll serve --config _config.yml,_config_dev.yml
+
+	```
+
